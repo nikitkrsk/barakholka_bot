@@ -257,7 +257,6 @@ bot.on('message', ctx => {
 
   if (chatId > 0) return
   if (chatId !== barakholkaId) return
-  console.log("WORKS")
 
   if ('text' in ctx.message) {
     const messageText = ctx.message.text
