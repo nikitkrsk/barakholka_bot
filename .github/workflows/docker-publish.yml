@@ -36,7 +36,7 @@ jobs:
       # Restart the service on the remote server
       - name: Restart Service on Remote Server
         run: |
-          ssh -o StrictHostKeyChecking=no root@${{ secrets.REMOTE_HOST }} "systemctl restart baraholkabot"
+          ssh -v -o StrictHostKeyChecking=no root@${{ secrets.REMOTE_HOST }} "systemctl restart baraholkabot"
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
