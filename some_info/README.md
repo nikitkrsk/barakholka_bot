@@ -9,6 +9,7 @@ ContainerName=baraholka
 EnvironmentFile=/etc/baraholka
 Volume=/var/lib/baraholka/subscriptions.json:/usr/src/app/subscriptions.json:z
 LogDriver=journald
+Pull=always
 User=root
 
 [Install]
@@ -19,13 +20,9 @@ WantedBy=multi-user.target default.target
 Restart=always
 
 
-# new conf
-когда выкатываешь новую версию
+# Manual update
+after push:  
+```bash ssh root@<host> systemctl restart baraholkabot```
 
-после пуша
-
-надо ssh root@<host> podman pull 
-ghcr.io/nikitkrsk/barakholka_bot/barakholka_bot:latest
-ssh root@<host> systemctl restart baraholkabot
-
-логи: journalctl -u baraholkabot
+logs: 
+```bash journalctl -u baraholkabot```
