@@ -5,6 +5,8 @@ dotenv.config()
 
 const bot = new Telegraf(process.env.BOT_TOKEN)
 const barakholkaId = Number(process.env.CHAT_ID)
+const isPrivateChat = ctx => ctx.chat?.type === 'private';
+
 let userSubscriptions = {}
 
 const predefinedGroups = {
@@ -92,12 +94,14 @@ const saveSubscriptions = () => {
 }
 
 bot.start(ctx => {
+  if (!isPrivateChat(ctx)) return
   ctx.reply(
     'Добро пожаловать! Вы можете добавить ключевые слова для отслеживания сообщений из Акронис Барахолки. Используйте /help, чтобы узнать больше о доступных командах.'
   )
 })
 
 bot.help(ctx => {
+  if (!isPrivateChat(ctx)) return
   ctx.reply(
     `Список доступных команд:
     /add <ключевое слово> - добавить ключевое слово для отслеживания.
@@ -111,6 +115,7 @@ bot.help(ctx => {
 })
 
 bot.command('add', ctx => {
+  if (!isPrivateChat(ctx)) return
   const userId = ctx.from.id
   const keyword = ctx.message?.text.split(' ').slice(1).join(' ').trim()
 
@@ -132,6 +137,7 @@ bot.command('add', ctx => {
 })
 
 bot.command('groups', ctx => {
+  if (!isPrivateChat(ctx)) return
   let message = 'Доступные категории:\n'
   Object.entries(predefinedGroups).forEach(([groupName, keywords]) => {
     message += `- ${groupName}: ${keywords.join(', ')}\n`
@@ -140,6 +146,7 @@ bot.command('groups', ctx => {
 })
 
 bot.command('list', ctx => {
+  if (!isPrivateChat(ctx)) return
   const userId = ctx.from.id
   const keywords = userSubscriptions[userId] || []
   if (keywords.length === 0) {
@@ -149,6 +156,7 @@ bot.command('list', ctx => {
 })
 
 bot.command('add_group', ctx => {
+  if (!isPrivateChat(ctx)) return
   const userId = ctx.from.id
   const groupName = ctx.message?.text
     .split(' ')
@@ -184,6 +192,7 @@ bot.command('add_group', ctx => {
 })
 
 bot.command('remove_group', ctx => {
+  if (!isPrivateChat(ctx)) return
   const userId = ctx.from.id
   const groupName = ctx.message?.text
     .split(' ')
@@ -216,6 +225,7 @@ bot.command('remove_group', ctx => {
 })
 
 bot.command('remove', ctx => {
+  if (!isPrivateChat(ctx)) return
   const userId = ctx.from.id
   const keyword = ctx.message?.text.split(' ').slice(1).join(' ').trim()
 
@@ -241,6 +251,7 @@ bot.command('remove', ctx => {
 })
 
 bot.command('clear', ctx => {
+  if (!isPrivateChat(ctx)) return
   const userId = ctx.from.id
 
   if (!userSubscriptions[userId] || userSubscriptions[userId].length === 0) {
