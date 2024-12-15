@@ -36,7 +36,12 @@ jobs:
       # Restart the service on the remote server
       - name: Restart Service on Remote Server
         run: |
-          ssh -v -o StrictHostKeyChecking=no root@${{ secrets.REMOTE_HOST }} "systemctl restart baraholkabot"
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ../private.key
+          sudo chmod 600 ../private.key
+          ssh -v -i "$SSH_KEY_PATH" -o StrictHostKeyChecking=no root@${{ secrets.REMOTE_HOST }} "systemctl restart baraholkabot"
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          SSH_KEY_PATH: ${{ github.workspace }}/../private.key
+
