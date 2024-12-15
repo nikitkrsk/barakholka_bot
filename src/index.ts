@@ -4,7 +4,7 @@ import * as dotenv from 'dotenv'
 dotenv.config()
 
 const bot = new Telegraf(process.env.BOT_TOKEN)
-// const barakholkaId = Number(process.env.CHAT_ID)
+const barakholkaId = Number(process.env.CHAT_ID)
 let userSubscriptions = {}
 
 const predefinedGroups = {
@@ -256,10 +256,8 @@ bot.on('message', ctx => {
   const chatId = ctx.chat.id
 
   if (chatId > 0) return
-
-  console.log('chatId', chatId)
-  // TODO UNCLOCK
-  // if (chatId !== barakholkaId) return
+  if (chatId !== barakholkaId) return
+  console.log("WORKS")
 
   if ('text' in ctx.message) {
     const messageText = ctx.message.text
